@@ -9,9 +9,9 @@
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 ### AI-Powered Smart EV Charging Station Finder for India
-### 🎓 Final Year B.E. Project — Computer Science & Engineering — 2025-26
+### 🎓 B.E. Project — Computer Science & Engineering — 2025-26
 
-[🌐 Live Demo](https://ev-charging-locator-hazel.vercel.app/) • [📄 API Docs](https://ev-charging-api-8nph.onrender.com/docs) • [🐛 Report Bug](https://github.com/SandeshPatil13989/ev-charging-locator/issues)
+[🌐 Live Demo](https://ev-charging-locator-hazel.vercel.app/)
 
 </div>
 
@@ -216,8 +216,8 @@ npm start
 
 ## 👨‍💻 Developer
 
-**Sandesh Roshan Patil**
-Final Year B.E. — Computer Science & Engineering
+**Sandesh(Roshan) Patil**
+B.E. — Computer Science & Engineering
 2025-2026
 
 ---
