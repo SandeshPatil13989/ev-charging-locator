@@ -7,7 +7,7 @@ import {
 } from "recharts";
 import axios from "axios";
 
-const BASE = "http://localhost:5000";
+const BASE = "https://ev-charging-api-8nph.onrender.com";
 const COLORS = ["#2563eb","#22c55e","#f59e0b","#ef4444","#8b5cf6","#ec4899","#14b8a6","#f97316"];
 
 const CustomTooltip = ({ active, payload, label }) => {
@@ -33,29 +33,43 @@ export default function MLDashboard({ realStations }) {
   const [activeChart, setActiveChart] = useState("availability");
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  const loadStats = () => {
+    setLoading(true);
+    setError(null);
     axios.get(`${BASE}/ml-stats`)
       .then((r) => { setStats(r.data); setLoading(false); })
       .catch(() => { setError("Failed to load ML stats"); setLoading(false); });
+  };
+
+  useEffect(() => {
+    loadStats();
   }, []);
 
   if (loading) return (
     <div className="ml-loading">
       <div className="ml-spinner"></div>
-      <p style={{ fontFamily: "'JetBrains Mono', monospace" }}>Loading ML Analytics...</p>
+      <p style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+        Loading ML Analytics...
+      </p>
+      <p style={{ color: "var(--text-muted)", fontSize: "0.78rem", marginTop: 8 }}>
+        Backend waking up — please wait 30 seconds
+      </p>
     </div>
   );
 
   if (error) return (
     <div className="ml-loading">
-      <p style={{ color: "var(--accent-red)" }}>❌ {error}</p>
-      <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: 8 }}>
-        Make sure FastAPI is running on port 5000
+      <p style={{ fontSize: "2rem", marginBottom: 12 }}>📊</p>
+      <p style={{ color: "var(--accent-red)", marginBottom: 8 }}>❌ {error}</p>
+      <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginBottom: 16 }}>
+        Backend may still be waking up — wait 30 seconds and retry
       </p>
+      <button className="btn-primary" onClick={loadStats}>
+        🔄 Retry
+      </button>
     </div>
   );
 
-  // Combine station stats with real stations if available
   const stationStats = realStations && realStations.length > 0
     ? [
         ...stats.station_stats,
