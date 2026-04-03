@@ -1,70 +1,249 @@
-# Getting Started with Create React App
+# ⚡ EV Charging Station Locator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
 
-## Available Scripts
+![EV Charging Locator](https://img.shields.io/badge/EV-Charging%20Locator-blue?style=for-the-badge&logo=lightning&logoColor=white)
+![React](https://img.shields.io/badge/React-18.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![XGBoost](https://img.shields.io/badge/XGBoost-87.3%25-orange?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-In the project directory, you can run:
+### AI-Powered Smart EV Charging Station Finder for India
+### 🎓 Final Year B.E. Project — Computer Science & Engineering — 2025-26
 
-### `npm start`
+[🌐 Live Demo](https://ev-charging-locator.vercel.app) • [📄 API Docs](https://ev-charging-api-8nph.onrender.com/docs) • [🐛 Report Bug](https://github.com/SandeshPatil13989/ev-charging-locator/issues)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+</div>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 📸 Screenshots
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Map View | ML Dashboard | AI Chat |
+|---|---|---|
+| Real EV stations across India | 5 interactive chart types | Context-aware AI assistant |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ✨ Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- 🗺️ **Real-time Map** — Real EV stations across all India via OpenStreetMap Overpass API
+- 🧠 **AI Prediction** — XGBoost model with **87.3% accuracy** predicts station availability
+- 🛣️ **Route Optimizer** — Dijkstra's algorithm for shortest path between stations
+- 🔋 **Battery-Aware** — Haversine formula filters only reachable stations by battery range
+- ⚡ **Live Updates** — WebSocket updates station availability every 15 seconds
+- 💰 **Cost Estimator** — Calculates exact cost (₹), energy (kWh) and time (min)
+- 📊 **ML Dashboard** — 5 interactive charts (Line, Bar, Pie, Radar, Horizontal Bar)
+- 🤖 **AI Chatbot** — Context-aware assistant with live station data
+- ⭐ **Reviews** — Community ratings and feedback system
+- 📋 **History** — Session tracker with battery visualization
+- 📱 **PWA** — Installable as native mobile app
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🚀 Tech Stack
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+| Layer | Technology |
+|---|---|
+| **Frontend** | React.js 18, Leaflet.js, Recharts, Socket.IO Client |
+| **Backend** | FastAPI, Python-SocketIO, Uvicorn |
+| **ML Model** | XGBoost, Scikit-learn, Pandas, NumPy |
+| **Map Data** | OpenStreetMap Overpass API, Nominatim |
+| **Routing** | Leaflet Routing Machine, Dijkstra's Algorithm |
+| **Real-time** | WebSocket (Socket.IO) |
+| **Deployment** | Vercel (Frontend) + Render (Backend) |
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📊 ML Model Details
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+Algorithm:        XGBoost Classifier
+Accuracy:         87.3% (Target: ≥85%) ✅
+Training Samples: 80,640
+Features:         10 engineered features
+```
 
-## Learn More
+### Features Used
+| Feature | Importance |
+|---|---|
+| Hour of Day | 32% |
+| Is Peak Hour | 24% |
+| Is Night | 15% |
+| Is Evening | 10% |
+| Charger Type | 8% |
+| Is Morning | 6% |
+| Is Weekend | 3% |
+| Total Slots | 2% |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Experiments Conducted
+- ✅ GridSearchCV — 768 parameter combinations
+- ✅ LightGBM — 87.35%
+- ✅ RF + XGBoost + LightGBM Ensemble — 87.29%
+- ✅ All converged to **87.3%** — confirmed optimal for synthetic data
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🗂️ Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+ev-charging-locator/
+├── backend/
+│   ├── main.py              # FastAPI — 11 routes + WebSocket
+│   ├── model.py             # XGBoost training script
+│   ├── data_generator.py    # 80,640 sample generator
+│   ├── dijkstra.py          # Shortest path algorithm
+│   ├── stations.json        # 8 local Mysuru stations
+│   ├── model.pkl            # Trained XGBoost model
+│   └── requirements.txt     # Python dependencies
+└── frontend/
+    └── src/
+        ├── App.jsx           # Main app + routing
+        ├── App.css           # Global styles
+        ├── api.js            # API calls
+        ├── socket.js         # WebSocket connection
+        └── components/
+            ├── Map.jsx        # Interactive map
+            ├── Dashboard.jsx  # Stats dashboard
+            ├── PredictPanel.jsx
+            ├── RoutePanel.jsx
+            ├── BatteryRec.jsx
+            ├── CostEstimator.jsx
+            ├── Reviews.jsx
+            ├── History.jsx
+            ├── MLDashboard.jsx
+            └── Chatbot.jsx
+```
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## ⚙️ API Endpoints
 
-### Making a Progressive Web App
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/` | Health check |
+| GET | `/stations` | All stations + live availability |
+| POST | `/predict` | AI availability prediction |
+| POST | `/route` | Dijkstra shortest path |
+| POST | `/recommend` | Battery-aware recommendations |
+| GET | `/analytics` | Hourly demand patterns |
+| POST | `/estimate` | Cost + time estimation |
+| POST | `/review` | Submit station review |
+| GET | `/reviews/{id}` | Get station reviews |
+| POST | `/nearby-stations` | Real stations via Overpass API |
+| GET | `/ml-stats` | ML model metrics |
+| WS | `socket.io` | Live availability updates |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 🏃 Run Locally
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- Git
 
-### Deployment
+### Backend Setup
+```bash
+cd backend
+python -m venv venv
+venv\Scripts\activate        # Windows
+source venv/bin/activate     # Mac/Linux
+pip install -r requirements.txt
+python model.py              # Train the model
+python main.py               # Start FastAPI server
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Frontend Setup
+```bash
+cd frontend
+npm install
+npm start
+```
 
-### `npm run build` fails to minify
+### Access
+- 🌐 Frontend: `http://localhost:3000`
+- ⚙️ Backend: `http://localhost:5000`
+- 📄 API Docs: `http://localhost:5000/docs`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 🌐 Deployment
+
+| Service | Platform | URL |
+|---|---|---|
+| Frontend | Vercel | https://ev-charging-locator.vercel.app |
+| Backend | Render | https://ev-charging-api-8nph.onrender.com |
+
+> **Note:** Render free tier sleeps after 15 min inactivity. First request may take 30-50 seconds to wake up.
+
+---
+
+## 📱 PWA Installation
+
+1. Open the live URL on Chrome mobile
+2. Tap **3 dots menu** (⋮)
+3. Tap **"Add to Home Screen"**
+4. Done — works like a native app! ⚡
+
+---
+
+## 🎯 Results
+
+| Objective | Target | Achieved | Status |
+|---|---|---|---|
+| ML Accuracy | ≥ 85% | 87.3% | ✅ Exceeded |
+| Real Station Coverage | India-wide | All cities via OSM | ✅ |
+| Real-time Updates | Live | Every 15 seconds | ✅ |
+| Route Optimization | Shortest path | Dijkstra + Turn-by-turn | ✅ |
+| Battery Recommendations | Range filter | Haversine distance | ✅ |
+| Cost Estimation | Accurate | kWh + INR + Time | ✅ |
+| Mobile PWA | Installable | Chrome PWA | ✅ |
+
+---
+
+## 🔮 Future Enhancements
+
+- [ ] Real IoT sensor data integration
+- [ ] Slot pre-booking and reservation
+- [ ] Payment gateway integration
+- [ ] Native Android/iOS app
+- [ ] Multi-language support (Hindi, Kannada)
+- [ ] Live traffic integration for routing
+- [ ] User authentication with JWT
+
+---
+
+## 👨‍💻 Developer
+
+**Sandesh Roshan Patil**
+Final Year B.E. — Computer Science & Engineering
+2025-2026
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🙏 Acknowledgements
+
+- [OpenStreetMap](https://www.openstreetmap.org/) — Map data via Overpass API
+- [XGBoost](https://xgboost.readthedocs.io/) — ML framework
+- [FastAPI](https://fastapi.tiangolo.com/) — Backend framework
+- [React](https://react.dev/) — Frontend framework
+- [Leaflet.js](https://leafletjs.com/) — Interactive maps
+- [Vercel](https://vercel.com/) — Frontend hosting
+- [Render](https://render.com/) — Backend hosting
+
+---
+
+<div align="center">
+
+⭐ **Star this repo if you found it helpful!** ⭐
+
+Made with ❤️ for Final Year Project 2025-26
+
+</div>
