@@ -11,7 +11,7 @@
 ### AI-Powered Smart EV Charging Station Finder for India
 ### 🎓 Final Year B.E. Project — Computer Science & Engineering — 2025-26
 
-[🌐 Live Demo](https://ev-charging-locator.vercel.app) • [📄 API Docs](https://ev-charging-api-8nph.onrender.com/docs) • [🐛 Report Bug](https://github.com/SandeshPatil13989/ev-charging-locator/issues)
+[🌐 Live Demo](https://ev-charging-locator-hazel.vercel.app/) • [📄 API Docs](https://ev-charging-api-8nph.onrender.com/docs) • [🐛 Report Bug](https://github.com/SandeshPatil13989/ev-charging-locator/issues)
 
 </div>
 
