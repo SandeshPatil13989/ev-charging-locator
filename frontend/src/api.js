@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE = "http://localhost:5000";
+const BASE = "https://ev-charging-api-8nph.onrender.com";
 
 export const getStations = () => axios.get(`${BASE}/stations`);
 
@@ -26,3 +26,7 @@ export const getReviews = (station_id) =>
 
 export const getNearbyStations = (lat, lng, radius) =>
   axios.post(`${BASE}/nearby-stations`, { lat, lng, radius });
+
+export const getMLStats = () => axios.get(`${BASE}/ml-stats`);
+
+export const sendChat = (data) => axios.post(`${BASE}/chat`, data);
