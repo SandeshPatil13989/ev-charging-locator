@@ -1,5 +1,6 @@
 import asyncio
 import json
+import os
 import random
 import time
 from math import radians, sin, cos, sqrt, atan2
@@ -102,8 +103,9 @@ async def simulate_availability():
 @app.on_event("startup")
 async def startup():
     asyncio.create_task(simulate_availability())
+    port = int(os.environ.get("PORT", 5000))
     print("🚀 FastAPI EV Charging Backend started!")
-    print("📄 API Docs: http://localhost:5000/docs")
+    print(f"📄 API Docs: http://localhost:{port}/docs")
 
 # ===== PYDANTIC MODELS =====
 class PredictRequest(BaseModel):
@@ -182,7 +184,6 @@ def build_graph(stations_list):
 
 # ===== API ROUTES =====
 
-# ✅ Root
 @app.get("/", tags=["Health"])
 async def root():
     return {
@@ -192,7 +193,6 @@ async def root():
         "total_stations": len(stations)
     }
 
-# ✅ Route 1: Get all stations
 @app.get("/stations", tags=["Stations"])
 async def get_stations():
     result = []
@@ -201,7 +201,6 @@ async def get_stations():
         result.append({**s, **avail})
     return result
 
-# ✅ Route 2: Predict availability
 @app.post("/predict", tags=["AI"])
 async def predict(req: PredictRequest):
     h = req.hour
@@ -224,7 +223,6 @@ async def predict(req: PredictRequest):
         "probability": round(probability, 2)
     }
 
-# ✅ Route 3: Route optimization
 @app.post("/route", tags=["Navigation"])
 async def get_route(req: RouteRequest):
     graph = build_graph(stations)
@@ -237,7 +235,6 @@ async def get_route(req: RouteRequest):
         "stations": path_stations
     }
 
-# ✅ Route 4: Battery-aware recommendations
 @app.post("/recommend", tags=["Stations"])
 async def recommend(req: RecommendRequest):
     results = []
@@ -249,7 +246,6 @@ async def recommend(req: RecommendRequest):
     results.sort(key=lambda x: x["distance_km"])
     return results
 
-# ✅ Route 5: Analytics
 @app.get("/analytics", tags=["Analytics"])
 async def analytics():
     peak_hours = [8, 9, 10, 17, 18, 19, 20]
@@ -272,7 +268,6 @@ async def analytics():
         "occupancy_rate": round((1 - total_available/total_slots) * 100, 1)
     }
 
-# ✅ Route 6: Cost Estimator
 @app.post("/estimate", tags=["Utilities"])
 async def estimate(req: EstimateRequest):
     station = next((s for s in stations if s["id"] == req.station_id), None)
@@ -291,7 +286,6 @@ async def estimate(req: EstimateRequest):
         "cost_per_unit": station["cost_per_unit"]
     }
 
-# ✅ Route 7: Submit review
 @app.post("/review", tags=["Reviews"])
 async def add_review(req: ReviewRequest):
     if req.station_id not in reviews_store:
@@ -305,14 +299,12 @@ async def add_review(req: ReviewRequest):
     reviews_store[req.station_id].insert(0, review)
     return {"success": True, "review": review}
 
-# ✅ Route 8: Get reviews
 @app.get("/reviews/{station_id}", tags=["Reviews"])
 async def get_reviews(station_id: int):
     reviews = reviews_store.get(station_id, [])
     avg = round(sum(r["rating"] for r in reviews) / len(reviews), 1) if reviews else 0
     return {"reviews": reviews, "average": avg, "count": len(reviews)}
 
-# ✅ Route 9: Nearby stations via Overpass
 @app.post("/nearby-stations", tags=["Stations"])
 async def nearby_stations(req: NearbyRequest):
     radius_meters = req.radius * 1000
@@ -325,13 +317,11 @@ async def nearby_stations(req: NearbyRequest):
     );
     out center tags;
     """
-    # Multiple Overpass servers to try
     overpass_servers = [
         "https://overpass-api.de/api/interpreter",
         "https://overpass.kumi.systems/api/interpreter",
         "https://overpass.private.coffee/api/interpreter",
     ]
-
     async with httpx.AsyncClient(timeout=45) as client:
         for server in overpass_servers:
             try:
@@ -392,10 +382,8 @@ async def nearby_stations(req: NearbyRequest):
             except Exception as e:
                 print(f"❌ Server {server} failed: {e}, trying next...")
                 continue
+    return {"error": "All Overpass servers are busy. Please try again."}
 
-    return {"error": "All Overpass servers are busy. Please try again in a moment."}
-
-# ✅ Route 10: ML Dashboard
 @app.get("/ml-stats", tags=["Analytics"])
 async def ml_stats():
     feature_importance = [
@@ -443,7 +431,6 @@ async def ml_stats():
         "station_stats": station_stats
     }
 
-# ✅ Route 11: AI Chatbot
 @app.post("/chat", tags=["AI"])
 async def chat(req: ChatRequest):
     message = req.message.lower().strip()
@@ -454,7 +441,6 @@ async def chat(req: ChatRequest):
     current_hour = time.localtime().tm_hour
     current_min = time.localtime().tm_min
     is_peak = current_hour in [8,9,10,17,18,19,20]
-
     best_station = max(
         [{"name": s["name"], "slots": availability_state[s["id"]]["available_slots"],
           "type": s["charger_type"]} for s in stations],
@@ -505,10 +491,11 @@ async def disconnect(sid):
 
 # ===== RUN SERVER =====
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
     uvicorn.run(
         "main:socket_app",
         host="0.0.0.0",
-        port=5000,
+        port=port,
         reload=False,
         log_level="info"
     )
